@@ -1,19 +1,29 @@
-const express = require("express");
-const path = require("path");
-const bodyParser = require("body-parser");
-const userRoutes = require("./routes/userroutes");
+// app.js
+require('dotenv').config();
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
+
+const userRoutes = require('./routes/userroutes');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "views")));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Rotas
-app.use("/", userRoutes);
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-// Inicia servidor
-app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:3000`);
-});
+// rotas
+app.use('/', userRoutes);
+
+// rota padrão
+app.get('/', (req, res) => res.redirect('/users'));
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`App rodando em http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;

@@ -1,20 +1,24 @@
-let users = []; // Simulação de banco de dados em memória
+const db = require('../db');
 
-class User {
-  constructor(nome, email) {
-    this.nome = nome;
-    this.email = email;
-  }
-
-  static addUser(nome, email) {
-    const user = new User(nome, email);
-    users.push(user);
-    return user;
-  }
-
-  static getAllUsers() {
-    return users;
-  }
+async function createUser({ name, email, phone }) {
+  const text = `INSERT INTO users (name, email, phone) VALUES ($1, $2, $3) RETURNING *`;
+  const values = [name, email, phone];
+  const { rows } = await db.query(text, values);
+  return rows[0];
 }
 
-module.exports = User;
+async function getAllUsers() {
+  const { rows } = await db.query(`SELECT id, name, email, phone, created_at FROM users ORDER BY id DESC`);
+  return rows;
+}
+
+async function getUserByEmail(email) {
+  const { rows } = await db.query(`SELECT * FROM users WHERE email=$1`, [email]);
+  return rows[0];
+}
+
+module.exports = {
+  createUser,
+  getAllUsers,
+  getUserByEmail
+};
