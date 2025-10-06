@@ -1,0 +1,30 @@
+name: Build and Push to Docker Hub
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Etapa 1: Checkout do repositório
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # Etapa 2: Login no Docker Hub
+      - name: Login no Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Etapa 3: Construir a imagem
+      - name: Build da imagem Docker
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/atv-andre:latest .
+
+      # Etapa 4: Enviar a imagem para o Docker Hub
+      - name: Push da imagem
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/atv-andre:latest
