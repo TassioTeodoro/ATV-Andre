@@ -6,7 +6,7 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "test": "jest --runInBand",
-    "migrate": "psql -h localhost -U postgres -d users -f migrations/create_users_table.sql"
+    "migrate": "knex migrate:latest"
   },
   "keywords": [],
   "author": "",

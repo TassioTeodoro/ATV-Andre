@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use('/', userRoutes);
 
 // rota padrão
-app.get('/', (req, res) => res.redirect('/users'));
+app.get('/', (req, res) => res.redirect('/register'));
 
 if (require.main === module) {
   app.listen(PORT, () => {
