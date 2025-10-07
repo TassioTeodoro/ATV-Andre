@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "jest --runInBand",
+    "test": "npm test",
     "migrate": "knex migrate:latest"
   },
   "keywords": [],
